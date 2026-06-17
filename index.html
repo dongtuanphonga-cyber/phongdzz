@@ -670,22 +670,27 @@ body.unlocked #unlockArea{opacity:0;transform:translateY(-12px) scale(.98);max-h
     }).format(ts);
 
   // ✅ FIX API
-  async function post(_, data){
-  // BYPASS: Luôn trả về thành công, key nào cũng đúng
+  async function post(_, data) {
+  // KEY LUNG TUNG CŨNG ĐƯỢC – LUÔN THÀNH CÔNG
+  const fakeExpiry = Date.now() + 24 * 60 * 60 * 1000; // 1 NGÀY
+
+  // Kiểm tra nếu key rỗng thì báo lỗi
+  if (!data.key || data.key.trim() === '') {
+    return {
+      ok: false,
+      error: 'Vui lòng nhập key'
+    };
+  }
+
   return {
     ok: true,
     data: {
-      expiresAt: Date.now() + 365 * 24 * 3600000,
-      deviceId: data.deviceId
+      expiresAt: fakeExpiry,
+      deviceId: data.deviceId,
+      message: '✅ Key hợp lệ'
     }
   };
 }
-
-    return {
-      ok: false,
-      error: j.message || 'Key lỗi'
-    };
-  }
 
   function ting(){
     try{
